@@ -1,0 +1,36 @@
+{
+  "mappers": {
+    "node01": {
+      "dir": "localhost:5671"
+    },
+    "node02": {
+      "dir": "localhost:5672"
+    },
+    "node03": {
+      "dir": "localhost:5673"
+    },
+    "node04": {
+      "dir": "localhost:5674"
+    }
+  },
+  "reducers": {
+    "node05": {
+      "dir": "localhost:6781",
+      "lowerBound": "a",
+      "upperBound": "f"
+    },
+    "node06": {
+      "dir": "localhost:6782",
+      "lowerBound": "g",
+      "upperBound": "p"
+    },
+    "node07": {
+      "dir": "localhost:6783",
+      "lowerBound": "q",
+      "upperBound": "z"
+    }
+  },
+  "partitioner": {
+    "dir": "localhost:8080"
+  }
+}
