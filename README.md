@@ -1,2 +1,24 @@
-# word-frequency-mapreduce
- Word frequency of a text file using MapReduce for UTP course IS924 Client-server architecture
+# Word frequency MapReduce
+Count the occurrences of each word in a text file concurrently (Partitioning the text and assigning each partition to a *mapper*, then collecting all results in *reducers*) 
+
+## Dependencies
+
+- [ZeroMQ](http://zeromq.org/)
+- [zmqpp](https://github.com/zeromq/zmqpp)
+- [JSON for Modern C++](https://github.com/nlohmann/json) (Included in `lib/`)
+
+## Usage
+
+To compile simply type in a terminal
+
+```bash
+ make
+```
+
+The file `config.json` contains information about mappers, reducers and the partitioner. There's [an example](https://github.com/sebasvega95/word-frequency-mapreduce/blob/master/config.json) local configuration in this repository.
+
+To run, do
+
+- `./partitioner.out text`
+- `./mapper.out node_name`
+- TODO reducer
