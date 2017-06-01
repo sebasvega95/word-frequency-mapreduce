@@ -21,4 +21,9 @@ To run, do
 
 - `./partitioner.out text`
 - `./mapper.out node_name`
-- TODO reducer
+- `./reducer.out node_name`
+
+where
+
+- `text` is the file for calculating the word count
+- `node_name` is the name of a node according to `config.json`
