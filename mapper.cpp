@@ -34,6 +34,38 @@ json count_words(std::string& text) {
   return freq;
 }
 
+void assign_words_to_reducers(json& freq) {
+  for (auto& reducer : nodes["reducers"]) {
+    reducer["words"] = json::object();
+    for (json::iterator it = freq.begin(); it != freq.end(); ++it) {
+      std::string word = it.key();
+      int word_freq = it.value();
+      std::string first_letter(1, word[0]);
+
+      if (first_letter >= reducer["lowerBound"] &&
+          first_letter <= reducer["upperBound"]) {
+        reducer["words"][word] = word_freq;
+      }
+    }
+  }
+}
+
+void send_freq_to_reducers(json& freq) {
+  assign_words_to_reducers(freq);
+  zmqpp::context ctx;
+  for (auto& reducer : nodes["reducers"]) {
+    std::string ip = reducer["ip"];
+    std::string port = reducer["port"];
+    std::string dir = ip + ":" + port;
+    zmqpp::socket reducer_socket(ctx, zmqpp::socket_type::push);
+    reducer_socket.connect("tcp://" + dir);
+
+    json message = reducer["words"];
+    std::cout << std::setw(2) << message << std::endl;
+    dispatcher::send(message, reducer_socket);
+  }
+}
+
 int main(int argc, char* argv[]) {
   if (argc != 2) {
     std::cout << "Usage: " << argv[0] << " node-id" << std::endl;
@@ -61,8 +93,7 @@ int main(int argc, char* argv[]) {
 
   std::string text = receive_text(partitioner_socket);
   json freq = count_words(text);
-
-  std::cout << std::setw(2) << freq << std::endl;
+  send_freq_to_reducers(freq);
 
   return 0;
 }
